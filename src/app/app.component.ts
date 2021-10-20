@@ -82,15 +82,24 @@ export class AppComponent implements OnInit {
       styles
     );
 
+    var circle = this.two.makeCircle(window.innerWidth, window.innerHeight, 50);
+    circle.fill = 'red';
+    circle.stroke = 'white';
+
+    var group = this.two.makeGroup(circle, text);
+    group.center();
+
+    this.two.add(group);
+
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 10 == 0)
-          if (text.scale < 2)
+          if (group.scale < 2)
             // text.rotation -= 0.01
-            text.scale += 0.01;
+            group.scale += 0.01;
           else {
-            text.scale = 0;
-            text.value = Math.round(Math.random() * 100);
+            group.scale = 0;
+            group.value = Math.round(Math.random() * 100);
           }
       })
       .play(); // Finally, start the animation loop
