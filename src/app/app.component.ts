@@ -81,13 +81,14 @@ export class AppComponent implements OnInit {
     var text = this.two.makeText(
       'Text test yes',
       window.innerWidth / 2,
-      window.innerHeight / 2,
+      window.innerHeight / 4,
       styles
     );
 
     this.two
       .bind('update', function (frameCount) {
-        text.rotation -= 0.01;
+        if (frameCount % 100 == 0) text.value = Math.round(Math.random() * 100);
+        // text.rotation -= 0.01;
       })
       .play(); // Finally, start the animation loop
   }
