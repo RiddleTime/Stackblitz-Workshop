@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
 
     this.initTwo();
 
-    // this.tryTwo();
     this.addText();
   }
 
@@ -59,6 +58,9 @@ export class AppComponent implements OnInit {
       let circle = new Two.Circle(0, 0, (i + 1) * circleRadius);
       circle.fill = '#00000077';
       circle.stroke = 'black';
+      circle.bind('touchend', (e) => {
+        console.log(e);
+      });
 
       let text = new Two.Text(
         '?',
@@ -72,6 +74,7 @@ export class AppComponent implements OnInit {
         }
       );
       text.fill = '#FFF';
+
       circleTexts.push(text);
 
       group.add(circle);
@@ -85,6 +88,14 @@ export class AppComponent implements OnInit {
     this.two.add(circles);
     this.two.update();
 
+    for (let i = 0; i < circleTexts.length; i++) {
+      document
+        .querySelector('#' + text._id)
+        .addEventListener('ontouchend', (e) => {
+          console.log('henlo ' + i);
+        });
+    }
+
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 2 == 0) {
@@ -96,6 +107,8 @@ export class AppComponent implements OnInit {
 
             for (let i = 0; i < circleTexts.length; i++) {
               circleTexts[i].rotation -= 0.01;
+
+              // console.log(circleTexts[i]._id);
             }
 
             text.value = Math.round(Math.random() * 100 + 1);
