@@ -75,28 +75,25 @@ export class AppComponent implements OnInit {
       leading: 50,
       weight: 900,
     };
-    var text = this.two.makeText(
-      Math.round(Math.random() * 100),
-      window.innerWidth / 2,
-      window.innerHeight / 4,
-      styles
-    );
+    var text = this.two.makeText(Math.round(Math.random() * 100), 0, 0, styles);
 
     var circle = this.two.makeCircle(window.innerWidth, window.innerHeight, 50);
-    circle.fill = 'red';
-    circle.stroke = 'white';
+    circle.fill = '#00000077';
+    circle.stroke = 'red';
 
     var group = this.two.makeGroup(circle, text);
     group.center();
 
     this.two.add(group);
 
+    console.log(group.children);
+
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 10 == 0)
           if (group.scale < 2)
             // text.rotation -= 0.01
-            group.scale += 0.01;
+            group.scale += (1 - group.scale) * 0.125;
           else {
             group.scale = 0;
             group.value = Math.round(Math.random() * 100);
