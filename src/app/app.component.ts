@@ -1,11 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  VERSION,
-  ViewChild,
-  OnInit,
-} from '@angular/core';
-import { AnalysisFailure } from '@angular/core/schematics/migrations/missing-injectable/transform';
+import { Component, VERSION, OnInit } from '@angular/core';
 import Two from 'two.js';
 
 @Component({
@@ -46,7 +39,7 @@ export class AppComponent implements OnInit {
     // And have translation, rotation, scale like all shapes.
     group.translation.set(this.two.width / 2, this.two.height / 2);
     group.rotation = Math.PI;
-    group.scale = 0.75;
+    group.scale = 0.7;
 
     // You can also set the same properties a shape have.
     group.linewidth = 7;
