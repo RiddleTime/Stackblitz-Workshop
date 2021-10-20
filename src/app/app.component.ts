@@ -50,38 +50,44 @@ export class AppComponent implements OnInit {
 
     let circles = new Two.Group();
     for (let i = 0; i < 5; i++) {
+      let group = new Two.Group();
+
       let circle = new Two.Circle(0, 0, (i + 1) * 40);
       circle.fill = '#00000077';
       circle.stroke = 'black';
-
-      let group = new Two.Group();
       group.add(circle);
 
-      let line = new Two.Line(-1 * i * 40, 10, 0, 0);
-      line.fill = '#FF0000';
-      line.stroke = '#FF0000';
-      line.width = 10;
-      group.add(line);
-      // group.center();
+      let text = new Two.Text('+', (i + 1) * 40 - 20, 0, {
+        family: 'proxima-nova, sans-serif',
+        size: 50,
+        leading: 0,
+        weight: 900,
+      });
+
+      group.add(text);
 
       circles.add(group);
     }
     circles.translation.set(window.innerWidth, window.innerHeight);
 
-    circles.scale = 1.5;
+    circles.scale = 0.1;
     this.two.add(circles);
     this.two.update();
-    console.log(circles.children);
 
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 2 == 0) {
-          if (circles.scale < 2) {
-            // text.rotation -= 0.01
-            circles.scale *= 1.01;
+          if (circles.scale < 1) {
+            circles.scale *= 1.02;
           } else {
-            circles.scale = 0.5;
-            circles.value = Math.round(Math.random() * 100);
+            circles.scale = 1;
+            circles.rotation -= 0.1;
+
+            for (let i = 0; i < circles.children.count; i++) {
+              let textChild = circles.children[i].children[1];
+              textChild.rotation.set(textChild.rotation + 0.1);
+            }
+
             text.value = Math.round(Math.random() * 100 + 1);
           }
         }
