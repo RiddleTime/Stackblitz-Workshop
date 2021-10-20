@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
         (i + 1) * 80
       );
       circle.fill = '#00000077';
-      circle.stroke = 'red';
+      circle.stroke = 'black';
 
       circleGroup.add(circle);
     }
@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < 5; i++) {
       let circle = new Two.Circle(0, 0, (i + 1) * 80);
       circle.fill = '#33AA0077';
-      circle.stroke = 'red';
+      circle.stroke = 'black';
 
       circleGroup2.add(circle);
     }
