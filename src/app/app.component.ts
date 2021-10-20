@@ -1,5 +1,6 @@
 import { Component, VERSION, OnInit, HostListener } from '@angular/core';
 import Two from 'two.js';
+import interact from 'interactjs';
 
 @Component({
   selector: 'my-app',
@@ -47,10 +48,12 @@ export class AppComponent implements OnInit {
     let topInfoGroup = this.two.makeGroup(text);
     this.two.add(topInfoGroup);
 
-    let circles = new Two.Group();
+    let circleGroups = new Two.Group();
+
     let circleRadius = 70;
 
     let circleTexts: any[] = [];
+    let circleCircles: any[] = [];
 
     for (let i = 0; i < 5; i++) {
       let group = new Two.Group();
@@ -61,6 +64,7 @@ export class AppComponent implements OnInit {
       circle.bind('ontouchend', (e) => {
         console.log(e);
       });
+      circleCircles.push(circle);
 
       let text = new Two.Text(
         '?',
@@ -74,36 +78,48 @@ export class AppComponent implements OnInit {
         }
       );
       text.fill = '#FFF';
-
       circleTexts.push(text);
 
       group.add(circle);
       group.add(text);
 
-      circles.add(group);
+      circleGroups.add(group);
     }
-    circles.translation.set(window.innerWidth, window.innerHeight);
+    circleGroups.translation.set(window.innerWidth, window.innerHeight);
 
-    circles.scale = 0.1;
-    this.two.add(circles);
+    circleGroups.scale = 0.1;
+    this.two.add(circleGroups);
     this.two.update();
 
-    for (let i = 0; i < circleTexts.length; i++) {
+    for (let i = 0; i < circleCircles.length; i++) {
       document
         .querySelector('#' + text._id)
         .addEventListener('ontouchstart', (e) => {
           console.log('henlo ' + i);
         });
+      let interactable = interact('.' + circleCircles[i]._id);
+      interactable.draggable({
+        listeners: {
+          move: showEventInfo,
+          onend: showEventInfo,
+        },
+      });
+    }
+
+    function showEventInfo(event) {
+      const actionInfo = JSON.stringify(event.interaction.prepared, null, 2);
+
+      event.target.textContent = `action: ${actionInfo} \ncoords: ${event.pageX}, ${event.pageY}`;
     }
 
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 2 == 0) {
-          if (circles.scale < 1) {
-            circles.scale *= 1.035;
+          if (circleGroups.scale < 1) {
+            circleGroups.scale *= 1.035;
           } else {
-            circles.scale = 1;
-            circles.rotation += 0.01;
+            circleGroups.scale = 1;
+            circleGroups.rotation += 0.01;
 
             for (let i = 0; i < circleTexts.length; i++) {
               circleTexts[i].rotation -= 0.01;
