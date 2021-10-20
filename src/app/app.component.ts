@@ -12,10 +12,7 @@ export class AppComponent implements OnInit {
   androidVersion = 'Angular ' + VERSION.major;
 
   ngOnInit(): void {
-    // this.ctx = this.canvas.nativeElement.getContext('2d');
-
-    // this.setCanvasSize();
-    // this.drawGraphics();
+    // two js : https://two.js.org/#introduction
 
     this.tryTwo();
   }
