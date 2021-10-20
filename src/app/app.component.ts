@@ -7,7 +7,7 @@ import Two from 'two.js';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  two;
+  two: any;
 
   androidVersion = 'Angular ' + VERSION.major;
 
@@ -81,7 +81,9 @@ export class AppComponent implements OnInit {
     this.two
       .bind('update', function (frameCount) {
         if (frameCount % 100 == 0) text.value = Math.round(Math.random() * 100);
-        // text.rotation -= 0.01;
+        // text.rotation -= 0.01
+        if (text.scale < 2) text.scale += 0.01;
+        else text.scale = -0.01;
       })
       .play(); // Finally, start the animation loop
   }
