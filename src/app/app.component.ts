@@ -1,4 +1,4 @@
-import { Component, VERSION, OnInit } from '@angular/core';
+import { Component, VERSION, OnInit, HostListener } from '@angular/core';
 import Two from 'two.js';
 
 @Component({
@@ -11,18 +11,27 @@ export class AppComponent implements OnInit {
 
   androidVersion = 'Angular ' + VERSION.major;
 
+  @HostListener('touchend') OnTouchEnd() {
+    // alert("Don't touch my bacon!");
+  }
+
   ngOnInit(): void {
     // two js : https://two.js.org/#introduction
 
-    this.tryTwo();
+    this.initTwo();
+
+    // this.tryTwo();
+    this.addText();
   }
 
-  private tryTwo() {
+  private initTwo() {
     this.two = new Two({
       fullscreen: true,
       autostart: true,
     }).appendTo(document.body);
+  }
 
+  private tryTwo() {
     var circle = this.two.makeCircle(-70, 0, 50);
     var rect = this.two.makeRectangle(70, 0, 100, 100);
     circle.fill = '#FF8000';
@@ -45,7 +54,7 @@ export class AppComponent implements OnInit {
     // Bind a function to scale and rotate the group
     // to the animation loop.
     this.two
-      .bind('update', function (frameCount) {
+      .bind('update', function (frameCount: number) {
         // This code is called everytime two.update() is called.
         // Effectively 60 times per second.
         if (group.scale > 0.9999) {
@@ -57,8 +66,6 @@ export class AppComponent implements OnInit {
         group.rotation += t * 4 * Math.PI;
       })
       .play(); // Finally, start the animation loop
-
-    this.addText();
   }
 
   private addText() {
@@ -69,18 +76,22 @@ export class AppComponent implements OnInit {
       weight: 900,
     };
     var text = this.two.makeText(
-      'Text test yes',
+      Math.round(Math.random() * 100),
       window.innerWidth / 2,
       window.innerHeight / 4,
       styles
     );
 
     this.two
-      .bind('update', function (frameCount) {
-        if (frameCount % 100 == 0) text.value = Math.round(Math.random() * 100);
-        // text.rotation -= 0.01
-        if (text.scale < 2) text.scale += 0.01;
-        else text.scale = -0.01;
+      .bind('update', (frameCount: number) => {
+        if (frameCount % 10 == 0)
+          if (text.scale < 2)
+            // text.rotation -= 0.01
+            text.scale += 0.01;
+          else {
+            text.scale = 0;
+            text.value = Math.round(Math.random() * 100);
+          }
       })
       .play(); // Finally, start the animation loop
   }
