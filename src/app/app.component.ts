@@ -97,12 +97,12 @@ export class AppComponent implements OnInit {
       // https://interactjs.io/docs/draggable/
       const interactable = interact('#' + circleCircles[i]._id);
       console.log(interactable);
-      interactable.on('dragmove dragend', (event) => {
+      interactable.on('dragEnter dragLeave', (event) => {
         console.log(event);
       });
       interactable.gesturable({
         onmove: function (event) {
-          console.log(event);
+          console.log('asdasd' + event);
           // var arrow = document.getElementById('arrow')
 
           circleCircles[i].rotation += event.distance / 100;
