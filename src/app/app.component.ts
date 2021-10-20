@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       weight: 900,
     };
     let text = new Two.Text(
-      Math.round(Math.random() * 100),
+      Math.round(Math.random() * 100 + 1),
       window.innerWidth / 2,
       60,
       styles
@@ -83,8 +83,9 @@ export class AppComponent implements OnInit {
             // text.rotation -= 0.01
             circleGroup2.scale += 0.01;
           else {
-            circleGroup2.scale = 0;
+            circleGroup2.scale = 0.5;
             circleGroup2.value = Math.round(Math.random() * 100);
+            text.value = Math.round(Math.random() * 100 + 1);
           }
         this.two.un;
       })
