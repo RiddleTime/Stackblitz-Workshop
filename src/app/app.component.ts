@@ -48,47 +48,43 @@ export class AppComponent implements OnInit {
     let topInfoGroup = this.two.makeGroup(text);
     this.two.add(topInfoGroup);
 
-    let circleGroup = new Two.Group();
+    let circles = new Two.Group();
     for (let i = 0; i < 5; i++) {
-      let circle = new Two.Circle(
-        window.innerWidth,
-        window.innerHeight,
-        (i + 1) * 80
-      );
+      let circle = new Two.Circle(0, 0, (i + 1) * 80);
       circle.fill = '#00000077';
       circle.stroke = 'black';
 
-      circleGroup.add(circle);
+      let group = new Two.Group();
+      group.add(circle);
+
+      let line = new Two.Line(-1 * i * 80, 10, 0, 0);
+      line.fill = '#FF0000';
+      line.stroke = '#FF0000';
+      line.width = 10;
+      group.add(line);
+      // group.center();
+
+      group.translation.set(window.innerWidth, window.innerHeight);
+      circles.add(group);
     }
-    this.two.add(circleGroup);
 
-    let circleGroup2 = new Two.Group();
-    for (let i = 0; i < 5; i++) {
-      let circle = new Two.Circle(0, 0, (i + 1) * 80);
-      circle.fill = '#33AA0077';
-      circle.stroke = 'black';
+    this.two.add(circles);
+    console.log(circles.children);
 
-      circleGroup2.add(circle);
-    }
-    this.two.add(circleGroup2);
-
-    let circle = new Two.Circle(window.innerWidth, window.innerHeight, 50);
-    circle.fill = '#00000077';
-    circle.stroke = 'red';
-
-    this.two
-      .bind('update', (frameCount: number) => {
-        if (frameCount % 2 == 0)
-          if (circleGroup2.scale < 1)
-            // text.rotation -= 0.01
-            circleGroup2.scale += 0.01;
-          else {
-            circleGroup2.scale = 0.5;
-            circleGroup2.value = Math.round(Math.random() * 100);
-            text.value = Math.round(Math.random() * 100 + 1);
-          }
-        this.two.un;
-      })
-      .play(); // Finally, start the animation loop
+    // this.two
+    //   .bind('update', (frameCount: number) => {
+    //     if (frameCount % 2 == 0)
+    //       if (circles.scale < 1) {
+    //         // text.rotation -= 0.01
+    //         circles.scale += 0.01;
+    //         circles.translate(0, 0);
+    //       } else {
+    //         circles.scale = 0.5;
+    //         circles.value = Math.round(Math.random() * 100);
+    //         text.value = Math.round(Math.random() * 100 + 1);
+    //       }
+    //     this.two.un;
+    //   })
+    //   .play(); // Finally, start the animation loop
   }
 }
