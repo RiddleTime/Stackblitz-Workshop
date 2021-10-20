@@ -50,41 +50,42 @@ export class AppComponent implements OnInit {
 
     let circles = new Two.Group();
     for (let i = 0; i < 5; i++) {
-      let circle = new Two.Circle(0, 0, (i + 1) * 80);
+      let circle = new Two.Circle(0, 0, (i + 1) * 40);
       circle.fill = '#00000077';
       circle.stroke = 'black';
 
       let group = new Two.Group();
       group.add(circle);
 
-      let line = new Two.Line(-1 * i * 80, 10, 0, 0);
+      let line = new Two.Line(-1 * i * 40, 10, 0, 0);
       line.fill = '#FF0000';
       line.stroke = '#FF0000';
       line.width = 10;
       group.add(line);
       // group.center();
 
-      group.translation.set(window.innerWidth, window.innerHeight);
       circles.add(group);
     }
+    circles.translation.set(window.innerWidth, window.innerHeight);
 
+    circles.scale = 1.5;
     this.two.add(circles);
+    this.two.update();
     console.log(circles.children);
 
-    // this.two
-    //   .bind('update', (frameCount: number) => {
-    //     if (frameCount % 2 == 0)
-    //       if (circles.scale < 1) {
-    //         // text.rotation -= 0.01
-    //         circles.scale += 0.01;
-    //         circles.translate(0, 0);
-    //       } else {
-    //         circles.scale = 0.5;
-    //         circles.value = Math.round(Math.random() * 100);
-    //         text.value = Math.round(Math.random() * 100 + 1);
-    //       }
-    //     this.two.un;
-    //   })
-    //   .play(); // Finally, start the animation loop
+    this.two
+      .bind('update', (frameCount: number) => {
+        if (frameCount % 2 == 0) {
+          if (circles.scale < 2) {
+            // text.rotation -= 0.01
+            circles.scale *= 1.01;
+          } else {
+            circles.scale = 0.5;
+            circles.value = Math.round(Math.random() * 100);
+            text.value = Math.round(Math.random() * 100 + 1);
+          }
+        }
+      })
+      .play(); // Finally, start the animation loop
   }
 }
