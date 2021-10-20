@@ -87,23 +87,31 @@ export class AppComponent implements OnInit {
     }
     circleGroups.translation.set(window.innerWidth, window.innerHeight);
 
-    circleGroups.scale = 0.1;
+    circleGroups.scale = 1;
     this.two.add(circleGroups);
     this.two.update();
 
     for (let i = 0; i < circleCircles.length; i++) {
-      document
-        .querySelector('#' + text._id)
-        .addEventListener('ontouchstart', (e) => {
-          console.log('henlo ' + i);
-        });
-      let interactable = interact('.' + circleCircles[i]._id);
+      const interactable = interact('.' + circleCircles[i]._id);
       interactable.draggable({
         listeners: {
           move: showEventInfo,
           onend: showEventInfo,
         },
       });
+      interactable
+        .on('dragmove dragend', showEventInfo)
+        .resizable({
+          edges: { left: true, top: true, bottom: true, right: true },
+        })
+        .on(['resizestart', 'resizemove', 'resizeend'], showEventInfo)
+        .gesturable({
+          enabled: true,
+        })
+        .on('gesture', {
+          move: showEventInfo,
+          end: showEventInfo,
+        });
     }
 
     function showEventInfo(event) {
@@ -115,20 +123,18 @@ export class AppComponent implements OnInit {
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 2 == 0) {
-          if (circleGroups.scale < 1) {
-            circleGroups.scale *= 1.035;
-          } else {
-            circleGroups.scale = 1;
-            circleGroups.rotation += 0.01;
+          for (let i = 0; i < circleGroups.children.length; i++) {
+            if (circleGroups.children[i].scale < 1) {
+              circleGroups.children[i].scale *= 1.035;
+            } else {
+              circleGroups.children[i].scale = 1;
+              circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
 
-            for (let i = 0; i < circleTexts.length; i++) {
               circleTexts[i].rotation -= 0.01;
-
-              // console.log(circleTexts[i]._id);
             }
-
-            text.value = Math.round(Math.random() * 100 + 1);
           }
+
+          text.value = Math.round(Math.random() * 100 + 1);
         }
       })
       .play(); // Finally, start the animation loop
