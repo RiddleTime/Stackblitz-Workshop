@@ -87,15 +87,7 @@ export class AppComponent implements OnInit {
 
     this.two
       .bind('update', function (frameCount) {
-        // This code is called everytime two.update() is called.
-        // Effectively 60 times per second.
-        if (text.scale > 0.9999) {
-          text.scale = text.rotation = 0;
-        }
-
-        var t = (1 - text.scale) * 0.125;
-        text.scale += t;
-        text.rotation += t * -4 * Math.PI;
+        text.rotation -= 0.01;
       })
       .play(); // Finally, start the animation loop
   }
