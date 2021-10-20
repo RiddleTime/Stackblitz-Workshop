@@ -55,10 +55,12 @@ export class AppComponent implements OnInit {
     let circleTexts: any[] = [];
     let circleCircles: any[] = [];
 
-    for (let i = 0; i < 5; i++) {
+    let circlesAmount = 5;
+    let totalRadius = circlesAmount * circleRadius;
+    for (let i = 0; i < circlesAmount; i++) {
       let group = new Two.Group();
 
-      let circle = new Two.Circle(0, 0, (i + 1) * circleRadius);
+      let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
       circle.fill = '#00000077';
       circle.stroke = 'black';
       circle.bind('ontouchend', (e) => {
@@ -82,42 +84,44 @@ export class AppComponent implements OnInit {
 
       group.add(circle);
       group.add(text);
-
+      group.scale = 0.1;
       circleGroups.add(group);
     }
-    circleGroups.translation.set(window.innerWidth, window.innerHeight);
+    circleGroups.translation.set(window.innerWidth / 2, window.innerHeight / 2);
 
     circleGroups.scale = 1;
     this.two.add(circleGroups);
     this.two.update();
 
     for (let i = 0; i < circleCircles.length; i++) {
-      const interactable = interact('.' + circleCircles[i]._id);
-      interactable.draggable({
-        listeners: {
-          move: showEventInfo,
-          onend: showEventInfo,
+      // https://interactjs.io/docs/draggable/
+      const interactable = interact('#' + circleCircles[i]._id);
+      console.log(interactable);
+      interactable.on('dragmove dragend', (event) => {
+        console.log(event);
+      });
+      interactable.gesturable({
+        onmove: function (event) {
+          console.log(event);
+          // var arrow = document.getElementById('arrow')
+
+          circleCircles[i].rotation += event.distance / 100;
+
+          // arrow.style.webkitTransform =
+          // arrow.style.transform =
+          //   'rotate(' + angle + 'deg)'
+
+          // document.getElementById('angle-info').textContent =
+          //   angle.toFixed(2) + '\u00b0'
         },
       });
-      interactable
-        .on('dragmove dragend', showEventInfo)
-        .resizable({
-          edges: { left: true, top: true, bottom: true, right: true },
-        })
-        .on(['resizestart', 'resizemove', 'resizeend'], showEventInfo)
-        .gesturable({
-          enabled: true,
-        })
-        .on('gesture', {
-          move: showEventInfo,
-          end: showEventInfo,
-        });
     }
 
     function showEventInfo(event) {
-      const actionInfo = JSON.stringify(event.interaction.prepared, null, 2);
+      let actionInfo = JSON.stringify(event.interaction.prepared, null, 2);
 
       event.target.textContent = `action: ${actionInfo} \ncoords: ${event.pageX}, ${event.pageY}`;
+      console.log(actionInfo);
     }
 
     this.two
@@ -130,7 +134,7 @@ export class AppComponent implements OnInit {
               circleGroups.children[i].scale = 1;
               circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
 
-              circleTexts[i].rotation -= 0.01;
+              circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
             }
           }
 
