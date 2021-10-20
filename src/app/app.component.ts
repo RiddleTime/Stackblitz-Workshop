@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
       let circle = new Two.Circle(0, 0, (i + 1) * circleRadius);
       circle.fill = '#00000077';
       circle.stroke = 'black';
-      circle.bind('touchend', (e) => {
+      circle.bind('ontouchend', (e) => {
         console.log(e);
       });
 
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < circleTexts.length; i++) {
       document
         .querySelector('#' + text._id)
-        .addEventListener('ontouchend', (e) => {
+        .addEventListener('ontouchstart', (e) => {
           console.log('henlo ' + i);
         });
     }
