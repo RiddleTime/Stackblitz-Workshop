@@ -11,8 +11,8 @@ export class AppComponent implements OnInit {
 
   androidVersion = 'Angular ' + VERSION.major;
 
-  @HostListener('touchend') OnTouchEnd() {
-    // alert("Don't touch my bacon!");
+  @HostListener('ontouchend') OnTouchEnd() {
+    alert("Don't touch my bacon!");
   }
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     let circleGroup2 = new Two.Group();
     for (let i = 0; i < 5; i++) {
       let circle = new Two.Circle(0, 0, (i + 1) * 80);
-      circle.fill = '#00000077';
+      circle.fill = '#33AA0077';
       circle.stroke = 'red';
 
       circleGroup2.add(circle);
