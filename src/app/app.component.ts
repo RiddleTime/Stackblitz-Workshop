@@ -56,13 +56,15 @@ export class AppComponent implements OnInit {
       circleCircles.unshift(circle);
 
       AppComponent.circleTexts[i] = [];
-      let textCount = 10 + i * 2;
-      for (let j = 0; j < textCount; j++) {
-        let text = this.getText(i, textCount, j, circleRadius);
-        AppComponent.circleTexts[i].unshift(text);
-      }
-      for (let j = 0; j < textCount; j++) {
-        group.children.unshift(AppComponent.circleTexts[i][j]);
+      if (i > 0) {
+        let textCount = 10 + i * 2;
+        for (let j = 0; j < textCount; j++) {
+          let text = this.getText(i, textCount, j, circleRadius);
+          AppComponent.circleTexts[i].unshift(text);
+        }
+        for (let j = 0; j < textCount; j++) {
+          group.children.unshift(AppComponent.circleTexts[i][j]);
+        }
       }
       group.children.unshift(circle);
       group.scale = 1;
@@ -111,6 +113,7 @@ export class AppComponent implements OnInit {
           move(event) {
             try {
               // console.log(event);
+
               let movement =
                 -event.velocity.y / 30000 + event.velocityX / 30000;
 
