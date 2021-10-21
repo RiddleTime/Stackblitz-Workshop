@@ -57,15 +57,13 @@ export class AppComponent implements OnInit {
 
     let circlesAmount = 5;
     let totalRadius = circlesAmount * circleRadius;
+
     for (let i = 0; i < circlesAmount; i++) {
       let group = new Two.Group();
 
       let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
       circle.fill = '#00000077';
       circle.stroke = 'black';
-      circle.bind('ontouchend', (e) => {
-        console.log(e);
-      });
       circleCircles.push(circle);
 
       let text = new Two.Text(
@@ -87,41 +85,27 @@ export class AppComponent implements OnInit {
       group.scale = 0.1;
       circleGroups.add(group);
     }
-    circleGroups.translation.set(window.innerWidth / 2, window.innerHeight / 2);
+    circleGroups.translation.set(window.innerWidth, window.innerHeight);
 
     circleGroups.scale = 1;
     this.two.add(circleGroups);
     this.two.update();
 
-    for (let i = 0; i < circleCircles.length; i++) {
+    for (let i = 0; i < circlesAmount; i++) {
       // https://interactjs.io/docs/draggable/
-      const interactable = interact('#' + circleCircles[i]._id);
+      const interactable = interact(
+        '#' + circleCircles[circlesAmount - i - 1]._id
+      );
       console.log(interactable);
-      interactable.on('dragEnter dragLeave', (event) => {
+
+      interactable.on('move', (event) => {
         console.log(event);
+        console.log(event.velocity);
+        circleGroups.children[i - 1].rotation +=
+          event.movementY < 0 ? 0.15 : -0.15;
+        circleTexts[i - 1].rotation -= event.movementY < 0 ? 0.15 : -0.15;
+        //  event.velocity / 100;
       });
-      interactable.gesturable({
-        onmove: function (event) {
-          console.log('asdasd' + event);
-          // var arrow = document.getElementById('arrow')
-
-          circleCircles[i].rotation += event.distance / 100;
-
-          // arrow.style.webkitTransform =
-          // arrow.style.transform =
-          //   'rotate(' + angle + 'deg)'
-
-          // document.getElementById('angle-info').textContent =
-          //   angle.toFixed(2) + '\u00b0'
-        },
-      });
-    }
-
-    function showEventInfo(event) {
-      let actionInfo = JSON.stringify(event.interaction.prepared, null, 2);
-
-      event.target.textContent = `action: ${actionInfo} \ncoords: ${event.pageX}, ${event.pageY}`;
-      console.log(actionInfo);
     }
 
     this.two
@@ -132,9 +116,9 @@ export class AppComponent implements OnInit {
               circleGroups.children[i].scale *= 1.035;
             } else {
               circleGroups.children[i].scale = 1;
-              circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
+              // circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
 
-              circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
+              // circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
             }
           }
 
