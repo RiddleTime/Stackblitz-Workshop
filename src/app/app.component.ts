@@ -10,7 +10,7 @@ import interact from 'interactjs';
 export class AppComponent implements OnInit {
   two: any;
 
-  androidVersion = 'Angular ' + VERSION.major;
+  circleTexts: any[][] = [];
 
   @HostListener('ontouchend') OnTouchEnd() {
     alert("Don't touch my bacon!");
@@ -49,7 +49,6 @@ export class AppComponent implements OnInit {
     let circlesAmount = 5;
     let totalRadius = circlesAmount * circleRadius;
 
-    let circleTexts: any[][] = [];
     let circleCircles: any[] = [];
 
     for (let i = 0; i < circlesAmount; i++) {
@@ -61,11 +60,14 @@ export class AppComponent implements OnInit {
       circleCircles.push(circle);
 
       circleTexts[i] = [];
-      let text = this.getText(i, circleRadius);
-      circleTexts[i].push(text);
+      for (let j = 0; j < 4; j++) {
+        let text = this.getText(i, circleRadius);
+        text.rotation = (Math.PI / 4) * j;
+        circleTexts[i].push(text);
+        group.add(text);
+      }
 
       group.add(circle);
-      group.add(text);
       group.scale = 0.1;
       circleGroups.add(group);
     }
