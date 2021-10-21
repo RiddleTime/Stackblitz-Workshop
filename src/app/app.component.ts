@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
         group.children.unshift(AppComponent.circleTexts[i][j]);
       }
       group.children.unshift(circle);
-      group.scale = 0.1;
+      group.scale = 1;
       AppComponent.circleGroups.add(group);
     }
     AppComponent.circleGroups.translation.set(
@@ -97,21 +97,25 @@ export class AppComponent implements OnInit {
         modifiers: [
           interact.modifiers.restrict({
             restriction: 'self', // keep the drag coords within the element
-            endOnly: true,
+            // endOnly: true,
           }),
         ],
         // Step 3
         listeners: {
+          start(event) {
+            console.log(event);
+          },
+          end(event) {
+            console.log(event);
+          },
           move(event) {
             try {
-              console.log(event);
+              // console.log(event);
               let movement =
-                -event.velocity.y / 40000 + event.velocityX / 40000;
-              // console.log(movement);
+                -event.velocity.y / 30000 + event.velocityX / 30000;
 
               AppComponent.circleGroups.children[i - 1].rotation += movement;
 
-              // // console.log(circleTexts[i - 1].length);
               for (let j = 0; j < AppComponent.circleTexts[i - 1].length; j++) {
                 AppComponent.circleTexts[i - 1][j].rotation -= movement;
               }
