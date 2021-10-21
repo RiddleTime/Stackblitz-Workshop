@@ -10,11 +10,7 @@ import interact from 'interactjs';
 export class AppComponent implements OnInit {
   two: any;
 
-  circleTexts: any[][] = [];
-
-  @HostListener('ontouchend') OnTouchEnd() {
-    alert("Don't touch my bacon!");
-  }
+  public circleTexts: any[][] = [];
 
   ngOnInit(): void {
     // two js : https://two.js.org/#introduction
@@ -59,13 +55,17 @@ export class AppComponent implements OnInit {
       circle.stroke = 'black';
       circleCircles.push(circle);
 
-      circleTexts[i] = [];
+      this.circleTexts[i] = [];
+      let textGroup = new Two.Group();
+      textGroup.width = totalRadius - (i + 1) * circleRadius;
       for (let j = 0; j < 4; j++) {
-        let text = this.getText(i, circleRadius);
+        let text = this.getText(i, 4, j, circleRadius);
         text.rotation = (Math.PI / 4) * j;
-        circleTexts[i].push(text);
-        group.add(text);
+        this.circleTexts[i].push(text);
+        textGroup.add(text);
+        textGroup.rotation += Math.PI / 4;
       }
+      group.add(textGroup);
 
       group.add(circle);
       group.scale = 0.1;
@@ -105,13 +105,12 @@ export class AppComponent implements OnInit {
               console.log(movement);
 
               circleGroups.children[i - 1].rotation += movement;
-              console.log(circleTexts);
 
               // console.log(circleTexts[i - 1].length);
-              for (let j = 0; j < circleTexts[i - 1].length; i++) {
-                let circleText = circleTexts[i - 1].values[j];
+              for (let j = 0; j < this.circleTexts[i - 1].length; i++) {
+                let circleText = this.circleTexts[i - 1].values[j];
                 console.log(circleText);
-                circleTexts[i][j].rotation -= movement;
+                this.circleTexts[i][j].rotation -= movement;
               }
             } catch (e) {
               console.log(e);
@@ -143,19 +142,44 @@ export class AppComponent implements OnInit {
       .play(); // Finally, start the animation loop
   }
 
-  private getText(circleIndex: number, circleRadius: number) {
-    let text = new Two.Text(
-      '?',
+  private getText(
+    circleIndex: number,
+    textAmount: number,
+    textIndex: number,
+    circleRadius: number
+  ) {
+    let singleTextAngle = 360 / textAmount;
+    let position = this.getPosition(
+      { x: 0, y: 0 },
       -1 * (circleIndex + 1) * circleRadius + circleRadius / 2,
-      -25,
-      {
-        family: 'proxima-nova, sans-serif',
-        size: 50,
-        leading: 0,
-        weight: 900,
-      }
+      singleTextAngle * (textIndex + 1)
     );
+
+    // original x = -1 * (circleIndex + 1) * circleRadius + circleRadius / 2,
+    let text = new Two.Text('?', position.x, position.y, {
+      family: 'proxima-nova, sans-serif',
+      size: 50,
+      leading: 0,
+      weight: 900,
+    });
     text.fill = '#FFF';
     return text;
+  }
+  private getPosition(
+    center: { x; y },
+    radius: number,
+    angle: number
+  ): { x; y } {
+    let p = {
+      x: center.x + radius * Math.cos(this.degrees_to_radians(angle)),
+      y: center.y + radius * Math.sin(this.degrees_to_radians(angle)),
+    };
+
+    return p;
+  }
+
+  private degrees_to_radians(degrees) {
+    var pi = Math.PI;
+    return degrees * (pi / 180);
   }
 }
