@@ -59,9 +59,10 @@ export class AppComponent implements OnInit {
       for (let j = 0; j < textCount; j++) {
         let text = this.getText(i, textCount, j, circleRadius);
         AppComponent.circleTexts[i].unshift(text);
-        group.children.unshift(text);
       }
-
+      for (let j = 0; j < textCount; j++) {
+        group.children.unshift(AppComponent.circleTexts[i][j]);
+      }
       group.children.unshift(circle);
       group.scale = 0.1;
       AppComponent.circleGroups.add(group);
@@ -76,10 +77,10 @@ export class AppComponent implements OnInit {
     this.two.update();
     console.log(AppComponent.circleGroups._id);
 
-    for (let i = 0; i < circlesAmount; i++) {
+    for (let i = 0; i < AppComponent.circleGroups.children.length; i++) {
       // https://interactjs.io/docs/draggable/
       let interactable = interact(
-        '#' + AppComponent.circleGroups.children[circlesAmount - i - 1]._id
+        '#' + AppComponent.circleGroups.children[i]._id
       );
       console.log(interactable);
 
@@ -102,13 +103,11 @@ export class AppComponent implements OnInit {
                 -event.velocity.y / 40000 + event.velocityX / 40000;
               // console.log(movement);
 
-              AppComponent.circleGroups.children[i - 1].rotation += movement;
+              AppComponent.circleGroups.children[i].rotation += movement;
 
               // // console.log(circleTexts[i - 1].length);
-              for (let j = 0; j < AppComponent.circleTexts[i - 1].length; i++) {
-                let circleText = AppComponent.circleTexts[i - 1].values[j];
-                console.log(circleText);
-                AppComponent.circleTexts[i - 1][j].rotation -= movement;
+              for (let j = 0; j < AppComponent.circleTexts[i].length; j++) {
+                AppComponent.circleTexts[i][j].rotation -= movement;
               }
             } catch (e) {
               console.log(e);
