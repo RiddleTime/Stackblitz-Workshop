@@ -46,12 +46,11 @@ export class AppComponent implements OnInit {
     let circleGroups = new Two.Group();
 
     let circleRadius = 70;
-
-    let circleTexts: any[] = [];
-    let circleCircles: any[] = [];
-
     let circlesAmount = 5;
     let totalRadius = circlesAmount * circleRadius;
+
+    let circleTexts: any[][] = [];
+    let circleCircles: any[] = [];
 
     for (let i = 0; i < circlesAmount; i++) {
       let group = new Two.Group();
@@ -61,6 +60,7 @@ export class AppComponent implements OnInit {
       circle.stroke = 'black';
       circleCircles.push(circle);
 
+      circleTexts[i] = [];
       let text = new Two.Text(
         '?',
         -1 * (i + 1) * circleRadius + circleRadius / 2,
@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
         }
       );
       text.fill = '#FFF';
-      circleTexts.push(text);
+      circleTexts[i].push(text);
 
       group.add(circle);
       group.add(text);
@@ -85,20 +85,14 @@ export class AppComponent implements OnInit {
     circleGroups.scale = 1;
     this.two.add(circleGroups);
     this.two.update();
+    console.log(circleGroups._id);
 
     for (let i = 0; i < circlesAmount; i++) {
       // https://interactjs.io/docs/draggable/
-      const interactable = interact(
-        '#' + circleCircles[circlesAmount - i - 1]._id
+      let interactable = interact(
+        '#' + circleGroups.children[circlesAmount - i - 1]._id
       );
       console.log(interactable);
-
-      interactable.on('move', (event) => {
-        console.log(event);
-        console.log(event.speed);
-
-        //  event.velocity / 100;
-      });
 
       interactable.draggable({
         // make the element fire drag events
@@ -113,17 +107,13 @@ export class AppComponent implements OnInit {
         listeners: {
           move(event) {
             console.log(event);
-            let movement = -event.velocity.y / 40000 + event.velocityX / 40000;
+            let movement = -event.velocity.y / 4000 + event.velocityX / 4000;
             console.log(movement);
 
             circleGroups.children[i - 1].rotation += movement;
-            circleTexts[i - 1].rotation -= movement;
-            // call this listener on every dragmove
-            // const sliderWidth = interact.getElementRect(event.target).width;
-            // const value = event.pageX / sliderWidth;
-
-            // event.target.style.paddingLeft = value * 100 + '%';
-            // event.target.setAttribute('data-value', value.toFixed(2));
+            for (let j = 0; j < circleTexts[i - 1].length; i++) {
+              circleTexts[i - 1][j].rotation -= movement;
+            }
           },
         },
       });

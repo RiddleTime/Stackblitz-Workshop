@@ -7,3 +7,10 @@ canvas {
   margin: 0 0;
   overflow: hidden;
 }
+
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
