@@ -41,8 +41,8 @@ export class AppComponent implements OnInit {
     let topInfoGroup = this.two.makeGroup(text);
     this.two.add(topInfoGroup);
 
-    let circleRadius = 70;
     let circlesAmount = 5;
+    let circleRadius = window.innerWidth / circlesAmount / 1.6;
     let totalRadius = circlesAmount * circleRadius;
 
     let circleCircles: any[] = [];
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
       circleCircles.unshift(circle);
 
       AppComponent.circleTexts[i] = [];
-      let textCount = 10;
+      let textCount = 10 + i * 2;
       for (let j = 0; j < textCount; j++) {
         let text = this.getText(i, textCount, j, circleRadius);
         AppComponent.circleTexts[i].unshift(text);
@@ -165,7 +165,7 @@ export class AppComponent implements OnInit {
     // original x = -1 * (circleIndex + 1) * circleRadius + circleRadius / 2,
     let text = new Two.Text('?', position.x, position.y, {
       family: 'proxima-nova, sans-serif',
-      size: 50,
+      size: circleRadius / 2,
       leading: 0,
       weight: 900,
     });
