@@ -61,18 +61,9 @@ export class AppComponent implements OnInit {
       circleCircles.push(circle);
 
       circleTexts[i] = [];
-      let text = new Two.Text(
-        '?',
-        -1 * (i + 1) * circleRadius + circleRadius / 2,
-        -25,
-        {
-          family: 'proxima-nova, sans-serif',
-          size: 50,
-          leading: 0,
-          weight: 900,
-        }
-      );
-      text.fill = '#FFF';
+
+      let text = this.getText(i, circleRadius);
+
       circleTexts[i].push(text);
 
       group.add(circle);
@@ -106,13 +97,18 @@ export class AppComponent implements OnInit {
         // Step 3
         listeners: {
           move(event) {
-            console.log(event);
-            let movement = -event.velocity.y / 4000 + event.velocityX / 4000;
-            console.log(movement);
+            try {
+              console.log(event);
+              let movement = -event.velocity.y / 4000 + event.velocityX / 4000;
+              console.log(movement);
 
-            circleGroups.children[i - 1].rotation += movement;
-            for (let j = 0; j < circleTexts[i - 1].length; i++) {
-              circleTexts[i - 1][j].rotation -= movement;
+              circleGroups.children[i - 1].rotation += movement;
+              // console.log(circleTexts[i - 1].length);
+              for (let j = 0; j < circleTexts[i].length; i++) {
+                circleTexts[i][j].rotation -= movement;
+              }
+            } catch (e) {
+              console.log(e);
             }
           },
         },
@@ -139,5 +135,21 @@ export class AppComponent implements OnInit {
         }
       })
       .play(); // Finally, start the animation loop
+  }
+
+  private getText(circleIndex: number, circleRadius: number) {
+    let text = new Two.Text(
+      '?',
+      -1 * (circleIndex + 1) * circleRadius + circleRadius / 2,
+      -25,
+      {
+        family: 'proxima-nova, sans-serif',
+        size: 50,
+        leading: 0,
+        weight: 900,
+      }
+    );
+    text.fill = '#FFF';
+    return text;
   }
 }
