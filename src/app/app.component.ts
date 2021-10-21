@@ -10,7 +10,8 @@ import interact from 'interactjs';
 export class AppComponent implements OnInit {
   two: any;
 
-  public circleTexts: any[][] = [];
+  public static circleTexts: any[][] = [];
+  public static circleGroups = new Two.Group();
 
   ngOnInit(): void {
     // two js : https://two.js.org/#introduction
@@ -39,8 +40,6 @@ export class AppComponent implements OnInit {
     let topInfoGroup = this.two.makeGroup(text);
     this.two.add(topInfoGroup);
 
-    let circleGroups = new Two.Group();
-
     let circleRadius = 70;
     let circlesAmount = 5;
     let totalRadius = circlesAmount * circleRadius;
@@ -55,33 +54,35 @@ export class AppComponent implements OnInit {
       circle.stroke = 'black';
       circleCircles.push(circle);
 
-      this.circleTexts[i] = [];
+      AppComponent.circleTexts[i] = [];
       let textGroup = new Two.Group();
       textGroup.width = totalRadius - (i + 1) * circleRadius;
-      for (let j = 0; j < 4; j++) {
-        let text = this.getText(i, 4, j, circleRadius);
-        text.rotation = (Math.PI / 4) * j;
-        this.circleTexts[i].push(text);
+      let textCount = 10;
+      for (let j = 0; j < textCount; j++) {
+        let text = this.getText(i, textCount, j, circleRadius);
+        AppComponent.circleTexts[i].push(text);
         textGroup.add(text);
-        textGroup.rotation += Math.PI / 4;
       }
       group.add(textGroup);
 
       group.add(circle);
       group.scale = 0.1;
-      circleGroups.add(group);
+      AppComponent.circleGroups.add(group);
     }
-    circleGroups.translation.set(window.innerWidth, window.innerHeight);
+    AppComponent.circleGroups.translation.set(
+      window.innerWidth,
+      window.innerHeight
+    );
 
-    circleGroups.scale = 1;
-    this.two.add(circleGroups);
+    AppComponent.circleGroups.scale = 1;
+    this.two.add(AppComponent.circleGroups);
     this.two.update();
-    console.log(circleGroups._id);
+    console.log(AppComponent.circleGroups._id);
 
     for (let i = 0; i < circlesAmount; i++) {
       // https://interactjs.io/docs/draggable/
       let interactable = interact(
-        '#' + circleGroups.children[circlesAmount - i - 1]._id
+        '#' + AppComponent.circleGroups.children[circlesAmount - i - 1]._id
       );
       console.log(interactable);
 
@@ -102,15 +103,15 @@ export class AppComponent implements OnInit {
               console.log(event);
               let movement =
                 -event.velocity.y / 40000 + event.velocityX / 40000;
-              console.log(movement);
-
-              circleGroups.children[i - 1].rotation += movement;
+              // console.log(movement);
+              
+              AppComponent.circleGroups.children[i - 1].rotation += movement;
 
               // console.log(circleTexts[i - 1].length);
-              for (let j = 0; j < this.circleTexts[i - 1].length; i++) {
-                let circleText = this.circleTexts[i - 1].values[j];
+              for (let j = 0; j < AppComponent.circleTexts[i - 1].length; i++) {
+                let circleText = AppComponent.circleTexts[i - 1].values[j];
                 console.log(circleText);
-                this.circleTexts[i][j].rotation -= movement;
+                AppComponent.circleTexts[i - 1][j].rotation -= movement;
               }
             } catch (e) {
               console.log(e);
@@ -123,11 +124,11 @@ export class AppComponent implements OnInit {
     this.two
       .bind('update', (frameCount: number) => {
         if (frameCount % 2 == 0) {
-          for (let i = 0; i < circleGroups.children.length; i++) {
-            if (circleGroups.children[i].scale < 2) {
-              circleGroups.children[i].scale *= 1.035;
+          for (let i = 0; i < AppComponent.circleGroups.children.length; i++) {
+            if (AppComponent.circleGroups.children[i].scale < 2) {
+              AppComponent.circleGroups.children[i].scale *= 1.035;
             } else {
-              circleGroups.children[i].scale = 2;
+              AppComponent.circleGroups.children[i].scale = 2;
               // circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
 
               // circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
@@ -165,11 +166,12 @@ export class AppComponent implements OnInit {
     text.fill = '#FFF';
     return text;
   }
+
   private getPosition(
-    center: { x; y },
+    center: { x: number; y: number },
     radius: number,
     angle: number
-  ): { x; y } {
+  ): { x: number; y: number } {
     let p = {
       x: center.x + radius * Math.cos(this.degrees_to_radians(angle)),
       y: center.y + radius * Math.sin(this.degrees_to_radians(angle)),
