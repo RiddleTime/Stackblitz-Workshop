@@ -61,9 +61,7 @@ export class AppComponent implements OnInit {
       circleCircles.push(circle);
 
       circleTexts[i] = [];
-
       let text = this.getText(i, circleRadius);
-
       circleTexts[i].push(text);
 
       group.add(circle);
@@ -92,6 +90,7 @@ export class AppComponent implements OnInit {
         modifiers: [
           interact.modifiers.restrict({
             restriction: 'self', // keep the drag coords within the element
+            endOnly: true,
           }),
         ],
         // Step 3
@@ -99,12 +98,17 @@ export class AppComponent implements OnInit {
           move(event) {
             try {
               console.log(event);
-              let movement = -event.velocity.y / 4000 + event.velocityX / 4000;
+              let movement =
+                -event.velocity.y / 40000 + event.velocityX / 40000;
               console.log(movement);
 
               circleGroups.children[i - 1].rotation += movement;
+              console.log(circleTexts);
+
               // console.log(circleTexts[i - 1].length);
-              for (let j = 0; j < circleTexts[i].length; i++) {
+              for (let j = 0; j < circleTexts[i - 1].length; i++) {
+                let circleText = circleTexts[i - 1].values[j];
+                console.log(circleText);
                 circleTexts[i][j].rotation -= movement;
               }
             } catch (e) {
