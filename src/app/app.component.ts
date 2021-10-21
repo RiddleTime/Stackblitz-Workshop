@@ -55,17 +55,14 @@ export class AppComponent implements OnInit {
       circleCircles.push(circle);
 
       AppComponent.circleTexts[i] = [];
-      let textGroup = new Two.Group();
-      textGroup.width = totalRadius - (i + 1) * circleRadius;
       let textCount = 10;
       for (let j = 0; j < textCount; j++) {
         let text = this.getText(i, textCount, j, circleRadius);
-        AppComponent.circleTexts[i].push(text);
-        textGroup.add(text);
+        AppComponent.circleTexts[i].unshift(text);
+        group.children.unshift(text);
       }
-      group.add(textGroup);
 
-      group.add(circle);
+      group.children.unshift(circle);
       group.scale = 0.1;
       AppComponent.circleGroups.add(group);
     }
@@ -89,7 +86,7 @@ export class AppComponent implements OnInit {
       interactable.draggable({
         // make the element fire drag events
         origin: 'self', // (0, 0) will be the element's top-left
-        inertia: true, // start inertial movement if thrown
+        inertia: false, // start inertial movement if thrown
         modifiers: [
           interact.modifiers.restrict({
             restriction: 'self', // keep the drag coords within the element
@@ -104,10 +101,10 @@ export class AppComponent implements OnInit {
               let movement =
                 -event.velocity.y / 40000 + event.velocityX / 40000;
               // console.log(movement);
-              
+
               AppComponent.circleGroups.children[i - 1].rotation += movement;
 
-              // console.log(circleTexts[i - 1].length);
+              // // console.log(circleTexts[i - 1].length);
               for (let j = 0; j < AppComponent.circleTexts[i - 1].length; i++) {
                 let circleText = AppComponent.circleTexts[i - 1].values[j];
                 console.log(circleText);
@@ -173,15 +170,10 @@ export class AppComponent implements OnInit {
     angle: number
   ): { x: number; y: number } {
     let p = {
-      x: center.x + radius * Math.cos(this.degrees_to_radians(angle)),
-      y: center.y + radius * Math.sin(this.degrees_to_radians(angle)),
+      x: center.x + radius * Math.cos(angle * (Math.PI / 180)),
+      y: center.y + radius * Math.sin(angle * (Math.PI / 180)),
     };
 
     return p;
-  }
-
-  private degrees_to_radians(degrees) {
-    var pi = Math.PI;
-    return degrees * (pi / 180);
   }
 }
