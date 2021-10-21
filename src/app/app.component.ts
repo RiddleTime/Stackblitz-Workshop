@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   private initTwo() {
     this.two = new Two({
       fullscreen: true,
+      fitted: true,
       autostart: true,
     }).appendTo(document.body);
   }
@@ -52,7 +53,7 @@ export class AppComponent implements OnInit {
       let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
       circle.fill = '#00000077';
       circle.stroke = 'black';
-      circleCircles.push(circle);
+      circleCircles.unshift(circle);
 
       AppComponent.circleTexts[i] = [];
       let textCount = 10;
@@ -77,17 +78,22 @@ export class AppComponent implements OnInit {
     this.two.update();
     console.log(AppComponent.circleGroups._id);
 
-    for (let i = 0; i < AppComponent.circleGroups.children.length; i++) {
+    console.log(
+      'circlegroup length: ' + AppComponent.circleGroups.children.length
+    );
+    console.log(AppComponent.circleGroups.children);
+    let circleGroupLength = AppComponent.circleGroups.children.length;
+    for (let i = 0; i < circleGroupLength; i++) {
       // https://interactjs.io/docs/draggable/
       let interactable = interact(
-        '#' + AppComponent.circleGroups.children[i]._id
+        '#' + AppComponent.circleGroups.children[circleGroupLength - 1 - i]._id
       );
       console.log(interactable);
 
       interactable.draggable({
         // make the element fire drag events
         origin: 'self', // (0, 0) will be the element's top-left
-        inertia: false, // start inertial movement if thrown
+        inertia: true, // start inertial movement if thrown
         modifiers: [
           interact.modifiers.restrict({
             restriction: 'self', // keep the drag coords within the element
@@ -103,11 +109,11 @@ export class AppComponent implements OnInit {
                 -event.velocity.y / 40000 + event.velocityX / 40000;
               // console.log(movement);
 
-              AppComponent.circleGroups.children[i].rotation += movement;
+              AppComponent.circleGroups.children[i - 1].rotation += movement;
 
               // // console.log(circleTexts[i - 1].length);
-              for (let j = 0; j < AppComponent.circleTexts[i].length; j++) {
-                AppComponent.circleTexts[i][j].rotation -= movement;
+              for (let j = 0; j < AppComponent.circleTexts[i - 1].length; j++) {
+                AppComponent.circleTexts[i - 1][j].rotation -= movement;
               }
             } catch (e) {
               console.log(e);
