@@ -5,6 +5,7 @@ export class Wheel {
   public contentAmount: number;
 
   public contentShapes: any[] = [];
+  public contentBackgrounds: any[] = [];
 
   public wheelGroup = new Two.Group();
 

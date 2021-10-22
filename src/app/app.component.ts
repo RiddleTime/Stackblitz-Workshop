@@ -86,6 +86,7 @@ export class AppComponent implements OnInit {
           );
           rect.fill = 'rgba(60, 200, 255, ' + i * 0.08 + ')';
           rect.stroke = '#1C75BC';
+          wheel.contentBackgrounds.unshift(rect);
 
           wheel.wheelGroup.children.unshift(rect);
           wheel.wheelGroup.children.unshift(text);
@@ -138,7 +139,7 @@ export class AppComponent implements OnInit {
           }
         }
 
-        if (frameCount % 10 == 0) {
+        if (frameCount % 360 == 0) {
           this.hideOffScreenElements();
         }
 
@@ -240,16 +241,27 @@ export class AppComponent implements OnInit {
   }
 
   private hideOffScreenElements() {
+    console.log('hiding');
     for (let i = 0; i < AppComponent.wheels.length; i++) {
       let wheel: Wheel = AppComponent.wheels[i];
       let wheelRotation: number = (wheel.wheelGroup.rotation * 180) / Math.PI;
       let contentAngle = wheel.getContentAngle();
+      console.log('wheelrotation: ' + wheelRotation);
+      for (let k = 0; k < wheel.contentShapes.length; k++) {
+        let shapeAngle =
+          (((k + 1) * contentAngle + wheelRotation) % 360) - wheelRotation;
 
-      for (let k = 0; k < wheel.wheelGroup.children.length; k++) {
-        let shapeAngle = k * contentAngle - wheelRotation;
-        if (shapeAngle > 270 && shapeAngle <= 360)
+        if (shapeAngle < 0) shapeAngle *= -1;
+        if (shapeAngle >= 270 && shapeAngle <= 360) {
           wheel.contentShapes[k].visible = true;
-        else wheel.contentShapes[k].visible = false;
+          // wheel.contentBackgrounds[k].visible = true;
+          wheel.contentBackgrounds[k].fill = 'white';
+        } else {
+          // console.log(shapeAngle);
+          // wheel.contentShapes[k].visible = false;
+          // wheel.contentBackgrounds[k].visible = false;
+          wheel.contentBackgrounds[k].fill = 'black';
+        }
       }
     }
   }
