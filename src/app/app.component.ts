@@ -176,7 +176,7 @@ export class AppComponent implements OnInit {
               // console.log(event);
 
               let movement =
-                -event.velocity.y / 40000 + event.velocityX / 40000;
+                -event.velocity.y / 30000 + event.velocityX / 30000;
 
               movement = movement > 0.025 ? 0.025 : movement;
               movement = movement < -0.025 ? -0.025 : movement;
@@ -211,7 +211,7 @@ export class AppComponent implements OnInit {
     );
 
     // original x = -1 * (circleIndex + 1) * circleRadius + circleRadius / 2,
-    let text = new Two.Text('?', position.x, position.y, {
+    let text = new Two.Text(textIndex, position.x, position.y, {
       family: 'proxima-nova, sans-serif',
       size: circleRadius / 2,
       leading: 0,
