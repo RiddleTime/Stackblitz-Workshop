@@ -41,20 +41,24 @@ export class AppComponent implements OnInit {
     let topInfoGroup = this.two.makeGroup(text);
     this.two.add(topInfoGroup);
 
-    let circlesAmount = 5;
-    let circleRadius = window.innerWidth / circlesAmount / 1.6;
+    let circlesAmount = 3;
+    let circleRadius = window.innerWidth / circlesAmount / 3;
     let totalRadius = circlesAmount * circleRadius;
 
     for (let i = circlesAmount; i >= 0; i--) {
       let wheel = new Wheel(i, 10 + i * 2);
 
-      let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
-      if (i < circlesAmount - 2) circle.fill = '#00000088';
+      let circle = new Two.Circle(
+        0,
+        0,
+        totalRadius - i * circleRadius + circleRadius
+      );
+      if (i < circlesAmount - 1) circle.fill = '#00000088';
       else circle.fill = 'red';
       circle.stroke = 'black';
-      wheel.wheelGroup.children.push(circle);
+      wheel.wheelGroup.children.unshift(circle);
 
-      if (i > 0) {
+      if (i >= 0) {
         console.log(
           'wheel ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
@@ -62,8 +66,9 @@ export class AppComponent implements OnInit {
           let text = this.getText(i, wheel.contentAmount, j, circleRadius);
           console.log(text);
           wheel.contentShapes.unshift(text);
+
           wheel.wheelGroup.children.unshift(
-            new Two.Circle(text._translation.x, text._translation.y, 50)
+            new Two.Circle(text._translation.x, text._translation.y, 40)
           );
           wheel.wheelGroup.children.unshift(text);
         }
@@ -101,11 +106,11 @@ export class AppComponent implements OnInit {
 
               let rotationAmount = 0.001 * (i * 2 + 1);
 
-              // Auto rotate the wheel and counterrotate the content;
-              wheel.wheelGroup.rotation += rotationAmount;
-              for (let i = 0; i < wheel.contentShapes.length; i++) {
-                wheel.contentShapes[i].rotation -= rotationAmount;
-              }
+              // // Auto rotate the wheel and counterrotate the content;
+              // wheel.wheelGroup.rotation += rotationAmount;
+              // for (let i = 0; i < wheel.contentShapes.length; i++) {
+              //   wheel.contentShapes[i].rotation -= rotationAmount;
+              // }
             }
           }
         }
