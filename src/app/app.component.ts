@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
       // circle.stroke = 'black';
       // wheel.wheelGroup.children.unshift(circle);
 
-      if (i > 0) {
+      if (i > 1) {
         console.log(
           'wheel ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
             text._translation.y,
             circleRadius / 2
           );
-          rect.fill = 'rgba(0, 200, 255, 0.75)';
+          rect.fill = 'rgba(60, 200, 255, ' + i * 0.08 + ')';
           rect.stroke = '#1C75BC';
 
           wheel.wheelGroup.children.unshift(rect);
