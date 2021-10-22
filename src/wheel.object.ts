@@ -1,20 +1,16 @@
-import { newArray } from '@angular/compiler/src/util';
 import Two from 'two.js';
 
 export class Wheel {
   public index: number;
   public contentAmount: number;
 
-  public contentShapes: any[];
+  public contentShapes: any[] = [];
 
   public wheelGroup = new Two.Group();
 
   constructor(index: number, contentAmount: number) {
     this.index = index;
     this.contentAmount = contentAmount;
-    this.contentShapes = [];
-
-    // this.wheelGroup
   }
 
   public getContentAngle() {

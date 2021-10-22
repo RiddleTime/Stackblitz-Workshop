@@ -60,7 +60,11 @@ export class AppComponent implements OnInit {
         );
         for (let j = 0; j < wheel.contentAmount; j++) {
           let text = this.getText(i, wheel.contentAmount, j, circleRadius);
+          console.log(text);
           wheel.contentShapes.unshift(text);
+          wheel.wheelGroup.children.unshift(
+            new Two.Circle(text._translation.x, text._translation.y, 50)
+          );
           wheel.wheelGroup.children.unshift(text);
         }
       }
@@ -71,7 +75,6 @@ export class AppComponent implements OnInit {
     console.log(AppComponent.wheels);
 
     for (let i = 0; i < AppComponent.wheels.length; i++) {
-      console.log(i);
       console.log(AppComponent.wheels[i].wheelGroup);
       AppComponent.wheels[i].wheelGroup.translation.set(
         window.innerWidth,
@@ -95,16 +98,14 @@ export class AppComponent implements OnInit {
               wheel.wheelGroup.scale *= 1.035;
             } else {
               wheel.wheelGroup.scale = 2;
-              wheel.wheelGroup.rotation += 0.01 * i;
 
-              console.log(wheel.contentShapes.length);
+              let rotationAmount = 0.001 * (i * 2 + 1);
+
+              // Auto rotate the wheel and counterrotate the content;
+              wheel.wheelGroup.rotation += rotationAmount;
               for (let i = 0; i < wheel.contentShapes.length; i++) {
-                wheel.contentShapes[i].rotation -= 0.01 * i;
+                wheel.contentShapes[i].rotation -= rotationAmount;
               }
-
-              // circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
-
-              // circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
             }
           }
         }
@@ -186,7 +187,7 @@ export class AppComponent implements OnInit {
       leading: 0,
       weight: 900,
     });
-    text.fill = '#FFF';
+    text.fill = '000';
     return text;
   }
 
