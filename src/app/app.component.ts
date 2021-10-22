@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
       console.log(AppComponent.wheels[i].wheelGroup);
       AppComponent.wheels[i].wheelGroup.translation.set(
         window.innerWidth,
-        window.innerHeight - circleRadius/2
+        window.innerHeight - circleRadius / 2
       );
       AppComponent.wheels[i].wheelGroup.scale = 1;
 
@@ -108,11 +108,11 @@ export class AppComponent implements OnInit {
 
               let rotationAmount = 0.001 * (i * 2 + 1);
 
-              // // Auto rotate the wheel and counterrotate the content;
-              // wheel.wheelGroup.rotation += rotationAmount;
-              // for (let i = 0; i < wheel.contentShapes.length; i++) {
-              //   wheel.contentShapes[i].rotation -= rotationAmount;
-              // }
+              // Auto rotate the wheel and counterrotate the content;
+              wheel.wheelGroup.rotation += rotationAmount;
+              for (let i = 0; i < wheel.contentShapes.length; i++) {
+                wheel.contentShapes[i].rotation -= rotationAmount;
+              }
             }
           }
         }
