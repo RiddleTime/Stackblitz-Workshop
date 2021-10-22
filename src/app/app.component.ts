@@ -155,7 +155,7 @@ export class AppComponent implements OnInit {
               // console.log(event);
 
               let movement =
-                -event.velocity.y / 30000 + event.velocityX / 30000;
+                -event.velocity.y / 40000 + event.velocityX / 40000;
               // console.log(wheel);
               wheel.wheelGroup.rotation += movement;
               // AppComponent.circleGroups.children[i - 1].rotation += movement;
