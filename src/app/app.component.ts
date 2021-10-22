@@ -125,7 +125,7 @@ export class AppComponent implements OnInit {
             } else {
               wheel.wheelGroup.scale = 2;
 
-              let autoRotate = false;
+              let autoRotate = true;
               if (autoRotate) {
                 let rotationAmount = 0.001 * (i * 2 + 1);
 
@@ -139,7 +139,7 @@ export class AppComponent implements OnInit {
           }
         }
 
-        if (frameCount % 360 == 0) {
+        if (frameCount % 30 == 0) {
           this.hideOffScreenElements();
         }
 
@@ -245,12 +245,13 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < AppComponent.wheels.length; i++) {
       let wheel: Wheel = AppComponent.wheels[i];
       let wheelRotation: number = (wheel.wheelGroup.rotation * 180) / Math.PI;
-      let contentAngle = wheel.getContentAngle();
-      console.log('wheelrotation: ' + wheelRotation);
-      for (let k = 0; k < wheel.contentShapes.length; k++) {
-        let shapeAngle =
-          (((k + 1) * contentAngle + wheelRotation) % 360) - wheelRotation;
 
+      if (wheelRotation < 0) wheelRotation = 360 + wheelRotation;
+
+      let contentAngle = wheel.getContentAngle();
+      for (let k = 0; k < wheel.contentShapes.length; k++) {
+        let shapeAngle = (wheel.contentShapes[k].rotation * 180) / Math.PI;
+        console.log(shapeAngle);
         if (shapeAngle < 0) shapeAngle *= -1;
         if (shapeAngle >= 270 && shapeAngle <= 360) {
           wheel.contentShapes[k].visible = true;
