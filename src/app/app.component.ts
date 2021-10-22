@@ -11,9 +11,6 @@ import { Wheel } from '../wheel.object';
 export class AppComponent implements OnInit {
   two: any;
 
-  public static circleTexts: any[][] = [];
-  public static circleGroups = new Two.Group();
-
   public static wheels: Wheel[] = [];
 
   ngOnInit(): void {
@@ -48,56 +45,78 @@ export class AppComponent implements OnInit {
     let circleRadius = window.innerWidth / circlesAmount / 1.6;
     let totalRadius = circlesAmount * circleRadius;
 
-    let circleCircles: any[] = [];
-
-    for (let i = 0; i < circlesAmount; i++) {
-      let group = new Two.Group();
+    for (let i = circlesAmount; i >= 0; i--) {
       let wheel = new Wheel(i, 10 + i * 2);
-      AppComponent.wheels.unshift(wheel);
 
       let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
-      if (i < circlesAmount - 2) circle.fill = '#00000077';
+      if (i < circlesAmount - 2) circle.fill = '#00000088';
       else circle.fill = 'red';
       circle.stroke = 'black';
-      circleCircles.unshift(circle);
+      wheel.wheelGroup.children.push(circle);
 
-      AppComponent.circleTexts[i] = [];
       if (i > 0) {
         console.log(
-          'circle ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
+          'wheel ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
         for (let j = 0; j < wheel.contentAmount; j++) {
           let text = this.getText(i, wheel.contentAmount, j, circleRadius);
-          AppComponent.circleTexts[i].unshift(text);
-        }
-        for (let j = 0; j < wheel.contentAmount; j++) {
-          group.children.unshift(AppComponent.circleTexts[i][j]);
+          wheel.contentShapes.unshift(text);
+          wheel.wheelGroup.children.unshift(text);
         }
       }
-      group.children.unshift(circle);
-      group.scale = 1;
-      AppComponent.circleGroups.add(group);
+      wheel.wheelGroup.scale = 1;
+
+      AppComponent.wheels.unshift(wheel);
     }
-    AppComponent.circleGroups.translation.set(
-      window.innerWidth,
-      window.innerHeight
-    );
+    console.log(AppComponent.wheels);
 
-    AppComponent.circleGroups.scale = 1;
-    this.two.add(AppComponent.circleGroups);
-    this.two.update();
-    console.log(AppComponent.circleGroups._id);
-
-    console.log(
-      'circlegroup length: ' + AppComponent.circleGroups.children.length
-    );
-    console.log(AppComponent.circleGroups.children);
-    let circleGroupLength = AppComponent.circleGroups.children.length;
-    for (let i = 1; i < circleGroupLength; i++) {
-      // https://interactjs.io/docs/draggable/
-      let interactable = interact(
-        '#' + AppComponent.circleGroups.children[circleGroupLength - 1 - i]._id
+    for (let i = 0; i < AppComponent.wheels.length; i++) {
+      console.log(i);
+      console.log(AppComponent.wheels[i].wheelGroup);
+      AppComponent.wheels[i].wheelGroup.translation.set(
+        window.innerWidth,
+        window.innerHeight
       );
+      AppComponent.wheels[i].wheelGroup.scale = 1;
+
+      this.two.add(AppComponent.wheels[i].wheelGroup);
+    }
+
+    this.two.update();
+
+    this.addWheelMoveListeners();
+
+    this.two
+      .bind('update', (frameCount: number) => {
+        if (frameCount % 2 == 0) {
+          for (let i = 0; i < AppComponent.wheels.length; i++) {
+            let wheel = AppComponent.wheels[i];
+            if (wheel.wheelGroup.scale < 2) {
+              wheel.wheelGroup.scale *= 1.035;
+            } else {
+              wheel.wheelGroup.scale = 2;
+              wheel.wheelGroup.rotation += 0.01 * i;
+
+              // circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
+
+              // circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
+            }
+          }
+        }
+
+        if (frameCount % 60 == 0) {
+          text.value++;
+        }
+      })
+      .play(); // Finally, start the animation loop
+  }
+
+  private addWheelMoveListeners() {
+    console.log('adding interactive js listeners to each wheel');
+    for (let i = 0; i < AppComponent.wheels.length; i++) {
+      let wheel = AppComponent.wheels[i];
+      // https://interactjs.io/docs/draggable/
+      let interactable = interact('#' + wheel.wheelGroup._id);
       console.log(interactable);
 
       interactable.draggable({
@@ -124,11 +143,14 @@ export class AppComponent implements OnInit {
 
               let movement =
                 -event.velocity.y / 30000 + event.velocityX / 30000;
+              console.log(wheel);
+              wheel.wheelGroup.rotation += movement;
+              // AppComponent.circleGroups.children[i - 1].rotation += movement;
 
-              AppComponent.circleGroups.children[i - 1].rotation += movement;
-
-              for (let j = 0; j < AppComponent.circleTexts[i - 1].length; j++) {
-                AppComponent.circleTexts[i - 1][j].rotation -= movement;
+              // counter rotate the content shapes
+              for (let j = 0; j < wheel.contentShapes.length; j++) {
+                wheel.contentShapes[j].rotation -= movement;
+                // AppComponent.circleTexts[i - 1][j].rotation -= movement;
               }
             } catch (e) {
               console.log(e);
@@ -137,27 +159,6 @@ export class AppComponent implements OnInit {
         },
       });
     }
-
-    this.two
-      .bind('update', (frameCount: number) => {
-        if (frameCount % 2 == 0) {
-          for (let i = 0; i < AppComponent.circleGroups.children.length; i++) {
-            if (AppComponent.circleGroups.children[i].scale < 2) {
-              AppComponent.circleGroups.children[i].scale *= 1.035;
-            } else {
-              AppComponent.circleGroups.children[i].scale = 2;
-              // circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
-
-              // circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
-            }
-          }
-        }
-
-        if (frameCount % 60 == 0) {
-          text.value++;
-        }
-      })
-      .play(); // Finally, start the animation loop
   }
 
   private getText(
