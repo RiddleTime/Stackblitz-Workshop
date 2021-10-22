@@ -138,6 +138,10 @@ export class AppComponent implements OnInit {
           }
         }
 
+        if (frameCount % 10 == 0) {
+          this.hideOffScreenElements();
+        }
+
         if (frameCount % 60 == 0) {
           text.value++;
         }
@@ -178,8 +182,9 @@ export class AppComponent implements OnInit {
               let movement =
                 -event.velocity.y / 30000 + event.velocityX / 30000;
 
-              movement = movement > 0.025 ? 0.025 : movement;
-              movement = movement < -0.025 ? -0.025 : movement;
+              let maxSpeed = 0.03;
+              movement = movement > maxSpeed ? maxSpeed : movement;
+              movement = movement < -maxSpeed ? -maxSpeed : movement;
 
               // rotate the entire wheelgroup
               wheel.wheelGroup.rotation += movement;
@@ -232,5 +237,20 @@ export class AppComponent implements OnInit {
     };
 
     return p;
+  }
+
+  private hideOffScreenElements() {
+    for (let i = 0; i < AppComponent.wheels.length; i++) {
+      let wheel: Wheel = AppComponent.wheels[i];
+      let wheelRotation: number = (wheel.wheelGroup.rotation * 180) / Math.PI;
+      let contentAngle = wheel.getContentAngle();
+
+      for (let k = 0; k < wheel.wheelGroup.children.length; k++) {
+        let shapeAngle = k * contentAngle - wheelRotation;
+        if (shapeAngle > 270 && shapeAngle <= 360)
+          wheel.contentShapes[k].visible = true;
+        else wheel.contentShapes[k].visible = false;
+      }
+    }
   }
 }
