@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
       AppComponent.circleTexts[i] = [];
       if (i > 0) {
         let textCount = 10 + i * 2;
+        console.log('circle ' + i + ' has ' + textCount + ' amount of text.');
         for (let j = 0; j < textCount; j++) {
           let text = this.getText(i, textCount, j, circleRadius);
           AppComponent.circleTexts[i].unshift(text);
@@ -85,7 +86,7 @@ export class AppComponent implements OnInit {
     );
     console.log(AppComponent.circleGroups.children);
     let circleGroupLength = AppComponent.circleGroups.children.length;
-    for (let i = 0; i < circleGroupLength; i++) {
+    for (let i = 1; i < circleGroupLength; i++) {
       // https://interactjs.io/docs/draggable/
       let interactable = interact(
         '#' + AppComponent.circleGroups.children[circleGroupLength - 1 - i]._id
