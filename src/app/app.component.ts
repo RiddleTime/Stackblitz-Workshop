@@ -1,6 +1,7 @@
 import { Component, VERSION, OnInit, HostListener } from '@angular/core';
 import Two from 'two.js';
 import interact from 'interactjs';
+import { Wheel } from '../wheel.object';
 
 @Component({
   selector: 'my-app',
@@ -49,16 +50,20 @@ export class AppComponent implements OnInit {
 
     for (let i = 0; i < circlesAmount; i++) {
       let group = new Two.Group();
+      let textCount = 10 + i * 2;
+      let wheel = new Wheel(i, textCount);
 
       let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
-      circle.fill = '#00000077';
+      if (i < circlesAmount - 2) circle.fill = '#00000077';
+      else circle.fill = 'red';
       circle.stroke = 'black';
       circleCircles.unshift(circle);
 
       AppComponent.circleTexts[i] = [];
       if (i > 0) {
-        let textCount = 10 + i * 2;
-        console.log('circle ' + i + ' has ' + textCount + ' amount of text.');
+        console.log(
+          'circle ' + i + ' has ' + wheel.textCount + ' amount of text.'
+        );
         for (let j = 0; j < textCount; j++) {
           let text = this.getText(i, textCount, j, circleRadius);
           AppComponent.circleTexts[i].unshift(text);
