@@ -42,42 +42,44 @@ export class AppComponent implements OnInit {
     this.two.add(topInfoGroup);
 
     let circlesAmount = 3;
-    let circleRadius = window.innerWidth / circlesAmount / 3;
+    let circleRadius = window.innerWidth / circlesAmount / 4;
     let totalRadius = circlesAmount * circleRadius;
 
-    for (let i = circlesAmount; i >= 0; i--) {
+    for (let i = circlesAmount; i > 0; i--) {
       let wheel = new Wheel(i, 10 + i * 2);
 
-      let circle = new Two.Circle(
-        0,
-        0,
-        totalRadius - i * circleRadius + circleRadius
-      );
-      if (i < circlesAmount - 1) circle.fill = '#00000088';
-      else circle.fill = 'red';
-      circle.stroke = 'black';
-      wheel.wheelGroup.children.unshift(circle);
+      // let circle = new Two.Circle(0, 0, totalRadius - i * circleRadius);
+      // circle.fill = '#00000088';
+      // circle.stroke = 'black';
+      // wheel.wheelGroup.children.unshift(circle);
 
-      if (i >= 0) {
+      if (i > 0) {
         console.log(
           'wheel ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
         for (let j = 0; j < wheel.contentAmount; j++) {
           let text = this.getText(i, wheel.contentAmount, j, circleRadius);
-          console.log(text);
           wheel.contentShapes.unshift(text);
 
-          wheel.wheelGroup.children.unshift(
-            new Two.Circle(text._translation.x, text._translation.y, 40)
+          var rect = this.two.makeCircle(
+            text._translation.x,
+            text._translation.y,
+            30
           );
+          rect.fill = 'rgba(0, 200, 255, 0.75)';
+          rect.stroke = '#1C75BC';
+
+          wheel.wheelGroup.children.unshift(rect);
           wheel.wheelGroup.children.unshift(text);
         }
       }
       wheel.wheelGroup.scale = 1;
+      wheel.wheelGroup.fill = '#00000088';
+      wheel.wheelGroup.stroke = '#000';
 
       AppComponent.wheels.unshift(wheel);
     }
-    console.log(AppComponent.wheels);
+    // console.log(AppComponent.wheels);
 
     for (let i = 0; i < AppComponent.wheels.length; i++) {
       console.log(AppComponent.wheels[i].wheelGroup);
@@ -136,17 +138,17 @@ export class AppComponent implements OnInit {
         inertia: true, // start inertial movement if thrown
         modifiers: [
           interact.modifiers.restrict({
-            restriction: 'self', // keep the drag coords within the element
+            // restriction: 'self', // keep the drag coords within the element
             // endOnly: true,
           }),
         ],
         // Step 3
         listeners: {
           start(event) {
-            console.log(event);
+            // console.log(event);
           },
           end(event) {
-            console.log(event);
+            // console.log(event);
           },
           move(event) {
             try {
@@ -154,7 +156,7 @@ export class AppComponent implements OnInit {
 
               let movement =
                 -event.velocity.y / 30000 + event.velocityX / 30000;
-              console.log(wheel);
+              // console.log(wheel);
               wheel.wheelGroup.rotation += movement;
               // AppComponent.circleGroups.children[i - 1].rotation += movement;
 
