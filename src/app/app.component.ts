@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
       AppComponent.circleTexts[i] = [];
       if (i > 0) {
         console.log(
-          'circle ' + i + ' has ' + wheel.textCount + ' amount of text.'
+          'circle ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
         for (let j = 0; j < textCount; j++) {
           let text = this.getText(i, textCount, j, circleRadius);
