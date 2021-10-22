@@ -156,14 +156,16 @@ export class AppComponent implements OnInit {
 
               let movement =
                 -event.velocity.y / 40000 + event.velocityX / 40000;
-              // console.log(wheel);
+
+              movement = movement > 0.065 ? 0.065 : movement;
+              movement = movement < -0.065 ? -0.065 : movement;
+
+              // rotate the entire wheelgroup
               wheel.wheelGroup.rotation += movement;
-              // AppComponent.circleGroups.children[i - 1].rotation += movement;
 
               // counter rotate the content shapes
               for (let j = 0; j < wheel.contentShapes.length; j++) {
                 wheel.contentShapes[j].rotation -= movement;
-                // AppComponent.circleTexts[i - 1][j].rotation -= movement;
               }
             } catch (e) {
               console.log(e);
