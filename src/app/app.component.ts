@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     this.two.add(topInfoGroup);
 
     let circlesAmount = 3;
-    let circleRadius = window.innerWidth / circlesAmount / 4;
+    let circleRadius = window.innerWidth / circlesAmount / 3;
     let totalRadius = circlesAmount * circleRadius;
 
     for (let i = circlesAmount; i > 0; i--) {
