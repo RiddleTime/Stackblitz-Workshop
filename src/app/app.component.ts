@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
             } else {
               wheel.wheelGroup.scale = 2;
 
-              let rotationAmount = 0.001 * (i * 2 + 1);
+              let rotationAmount = 0.0001 * (i * 2 + 1);
 
               // Auto rotate the wheel and counterrotate the content;
               wheel.wheelGroup.rotation += rotationAmount;
