@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
         }
       }
       wheel.wheelGroup.scale = 1;
-      wheel.wheelGroup.fill = '#00000088';
+      // wheel.wheelGroup.fill = '#00000088';
       wheel.wheelGroup.stroke = '#000';
 
       AppComponent.wheels.unshift(wheel);
