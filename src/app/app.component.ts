@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     let totalRadius = circlesAmount * circleRadius;
 
     for (let i = circlesAmount; i > 0; i--) {
-      let wheel = new Wheel(i, 10 + i * 2);
+      let wheel = new Wheel(i, 3 + (i + 1) * 3);
 
       // let circle = new Two.Circle(0, 0, totalRadius - i * circleRadius);
       // circle.fill = '#00000088';
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
           var rect = this.two.makeCircle(
             text._translation.x,
             text._translation.y,
-            30
+            circleRadius / 2
           );
           rect.fill = 'rgba(0, 200, 255, 0.75)';
           rect.stroke = '#1C75BC';
