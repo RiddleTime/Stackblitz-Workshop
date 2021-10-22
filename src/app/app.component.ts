@@ -97,6 +97,11 @@ export class AppComponent implements OnInit {
               wheel.wheelGroup.scale = 2;
               wheel.wheelGroup.rotation += 0.01 * i;
 
+              console.log(wheel.contentShapes.length);
+              for (let i = 0; i < wheel.contentShapes.length; i++) {
+                wheel.contentShapes[i].rotation -= 0.01 * i;
+              }
+
               // circleGroups.children[i].rotation += 0.01 * (i % 2 ? 1 : -1);
 
               // circleTexts[i].rotation -= 0.01 * (i % 2 ? 1 : -1);
