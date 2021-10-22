@@ -14,6 +14,8 @@ export class AppComponent implements OnInit {
   public static circleTexts: any[][] = [];
   public static circleGroups = new Two.Group();
 
+  public static wheels: Wheel[] = [];
+
   ngOnInit(): void {
     // two js : https://two.js.org/#introduction
 
@@ -50,8 +52,8 @@ export class AppComponent implements OnInit {
 
     for (let i = 0; i < circlesAmount; i++) {
       let group = new Two.Group();
-      let textCount = 10 + i * 2;
-      let wheel = new Wheel(i, textCount);
+      let wheel = new Wheel(i, 10 + i * 2);
+      AppComponent.wheels.unshift(wheel);
 
       let circle = new Two.Circle(0, 0, totalRadius - (i + 1) * circleRadius);
       if (i < circlesAmount - 2) circle.fill = '#00000077';
@@ -64,11 +66,11 @@ export class AppComponent implements OnInit {
         console.log(
           'circle ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
-        for (let j = 0; j < textCount; j++) {
-          let text = this.getText(i, textCount, j, circleRadius);
+        for (let j = 0; j < wheel.contentAmount; j++) {
+          let text = this.getText(i, wheel.contentAmount, j, circleRadius);
           AppComponent.circleTexts[i].unshift(text);
         }
-        for (let j = 0; j < textCount; j++) {
+        for (let j = 0; j < wheel.contentAmount; j++) {
           group.children.unshift(AppComponent.circleTexts[i][j]);
         }
       }
