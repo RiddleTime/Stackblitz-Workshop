@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
       console.log(AppComponent.wheels[i].wheelGroup);
       AppComponent.wheels[i].wheelGroup.translation.set(
         window.innerWidth,
-        window.innerHeight
+        window.innerHeight - circleRadius/2
       );
       AppComponent.wheels[i].wheelGroup.scale = 1;
 
