@@ -41,13 +41,31 @@ export class AppComponent implements OnInit {
     let topInfoGroup = this.two.makeGroup(text);
     this.two.add(topInfoGroup);
 
-    let circlesAmount = 3;
-    let circleRadius = window.innerWidth / circlesAmount / 3;
+    let circlesAmount = 5;
+    let circleRadius = window.innerWidth / circlesAmount / 2.5;
     let totalRadius = circlesAmount * circleRadius;
 
-    for (let i = circlesAmount; i > 0; i--) {
-      let wheel = new Wheel(i, 3 + (i + 1) * 3);
-
+    for (let i: number = circlesAmount; i > 0; i--) {
+      let contentAmount = 0;
+      switch (i) {
+        case 1:
+          contentAmount = 9;
+          break;
+        case 2:
+          contentAmount = 15;
+          break;
+        case 3:
+          contentAmount = 21;
+          break;
+        case 4:
+          contentAmount = 27;
+          break;
+        case 5:
+          contentAmount = 33;
+          break;
+      }
+      // content amount 3 + (i + 1) * 3)
+      let wheel = new Wheel(i, contentAmount);
       // let circle = new Two.Circle(0, 0, totalRadius - i * circleRadius);
       // circle.fill = '#00000088';
       // circle.stroke = 'black';
@@ -106,12 +124,15 @@ export class AppComponent implements OnInit {
             } else {
               wheel.wheelGroup.scale = 2;
 
-              let rotationAmount = 0.0001 * (i * 2 + 1);
+              let autoRotate = false;
+              if (autoRotate) {
+                let rotationAmount = 0.001 * (i * 2 + 1);
 
-              // Auto rotate the wheel and counterrotate the content;
-              wheel.wheelGroup.rotation += rotationAmount;
-              for (let i = 0; i < wheel.contentShapes.length; i++) {
-                wheel.contentShapes[i].rotation -= rotationAmount;
+                // Auto rotate the wheel and counterrotate the content;
+                wheel.wheelGroup.rotation += rotationAmount;
+                for (let i = 0; i < wheel.contentShapes.length; i++) {
+                  wheel.contentShapes[i].rotation -= rotationAmount;
+                }
               }
             }
           }
@@ -157,8 +178,8 @@ export class AppComponent implements OnInit {
               let movement =
                 -event.velocity.y / 40000 + event.velocityX / 40000;
 
-              movement = movement > 0.065 ? 0.065 : movement;
-              movement = movement < -0.065 ? -0.065 : movement;
+              movement = movement > 0.025 ? 0.025 : movement;
+              movement = movement < -0.025 ? -0.025 : movement;
 
               // rotate the entire wheelgroup
               wheel.wheelGroup.rotation += movement;
