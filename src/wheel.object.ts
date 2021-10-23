@@ -2,6 +2,7 @@ import Two from 'two.js';
 
 export class Wheel {
   public index: number;
+  public radius: number;
   public contentAmount: number;
 
   public contentShapes: any[] = [];

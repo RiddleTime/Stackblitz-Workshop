@@ -71,20 +71,21 @@ export class AppComponent implements OnInit {
       // circle.stroke = 'black';
       // wheel.wheelGroup.children.unshift(circle);
 
-      if (i > 1) {
+      if (i > 0) {
         console.log(
           'wheel ' + i + ' has ' + wheel.contentAmount + ' amount of text.'
         );
         for (let j = 0; j < wheel.contentAmount; j++) {
           let text = this.getText(i, wheel.contentAmount, j, circleRadius);
           wheel.contentShapes.unshift(text);
+          wheel.radius = circleRadius;
 
           var rect = this.two.makeCircle(
             text._translation.x,
             text._translation.y,
             circleRadius / 2
           );
-          rect.fill = 'rgba(60, 200, 255, ' + i * 0.08 + ')';
+          rect.fill = 'rgba(60, 200, 0, ' + i * 0.08 + ')';
           rect.stroke = '#1C75BC';
           wheel.contentBackgrounds.unshift(rect);
 
@@ -125,7 +126,7 @@ export class AppComponent implements OnInit {
             } else {
               wheel.wheelGroup.scale = 2;
 
-              let autoRotate = true;
+              let autoRotate = false;
               if (autoRotate) {
                 let rotationAmount = 0.001 * (i * 2 + 1);
 
@@ -140,7 +141,7 @@ export class AppComponent implements OnInit {
         }
 
         if (frameCount % 30 == 0) {
-          this.hideOffScreenElements();
+          // this.hideOffScreenElements();
         }
 
         if (frameCount % 60 == 0) {
