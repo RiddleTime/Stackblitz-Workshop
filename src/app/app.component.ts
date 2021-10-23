@@ -46,7 +46,6 @@ export class AppComponent implements OnInit {
     let totalRadius = circlesAmount * circleRadius;
 
     for (let i: number = circlesAmount; i > 0; i--) {
-
       let contentAmount = 0;
       switch (i) {
         case 1:
@@ -185,6 +184,14 @@ export class AppComponent implements OnInit {
               movement = movement < -maxSpeed ? -maxSpeed : movement;
 
               // rotate the entire wheelgroup
+              console.log(
+                'Moving Wheel ' +
+                  wheel.index +
+                  ', from ' +
+                  wheel.wheelGroup.rotation +
+                  ' by ' +
+                  movement
+              );
               wheel.wheelGroup.rotation += movement;
 
               // counter rotate the content shapes
@@ -238,7 +245,7 @@ export class AppComponent implements OnInit {
   }
 
   private hideOffScreenElements() {
-    console.log('hiding');
+    // console.log('hiding');
     for (let i = 0; i < AppComponent.wheels.length; i++) {
       let wheel: Wheel = AppComponent.wheels[i];
       let wheelRotation: number = (wheel.wheelGroup.rotation * 180) / Math.PI;
