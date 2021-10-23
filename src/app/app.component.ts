@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
     let totalRadius = circlesAmount * circleRadius;
 
     for (let i: number = circlesAmount; i > 0; i--) {
+
       let contentAmount = 0;
       switch (i) {
         case 1:
@@ -64,12 +65,7 @@ export class AppComponent implements OnInit {
           contentAmount = 33;
           break;
       }
-      // content amount 3 + (i + 1) * 3)
       let wheel = new Wheel(i, contentAmount);
-      // let circle = new Two.Circle(0, 0, totalRadius - i * circleRadius);
-      // circle.fill = '#00000088';
-      // circle.stroke = 'black';
-      // wheel.wheelGroup.children.unshift(circle);
 
       if (i > 0) {
         console.log(
