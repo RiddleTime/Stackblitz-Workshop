@@ -177,11 +177,15 @@ export class AppComponent implements OnInit {
               // console.log(event);
 
               let movement =
-                -event.velocity.y / 30000 + event.velocityX / 30000;
+                -event.velocity.y / 35000 + event.velocityX / 35000;
 
-              let maxSpeed = 0.03;
+              movement = (movement / wheel.radius) * 100;
+
+              let maxSpeed = 0.025;
               movement = movement > maxSpeed ? maxSpeed : movement;
               movement = movement < -maxSpeed ? -maxSpeed : movement;
+
+              let minSpeed = 0.
 
               // rotate the entire wheelgroup
               console.log(
