@@ -9,7 +9,7 @@ import { Wheel } from '../wheel.object';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  two: any;
+  two: any;sudo
 
   public static wheels: Wheel[] = [];
 
